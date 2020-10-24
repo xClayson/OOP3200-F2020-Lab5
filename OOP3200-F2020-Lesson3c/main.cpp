@@ -1,10 +1,9 @@
+#include <fstream>
 #include <iomanip>
 #include <iostream>
-
+#include <map>
 
 #include "Vector2D.h"
-
-
 
 int main()
 {
@@ -13,9 +12,10 @@ int main()
 		/************************
 		 *	DECLARATIONS
 		 ************************/
+		std::map<std::string, Vector2D<int>*> coordinatesMap;
 
-
-
+		std::ifstream infile;
+		std::string fileName;
 		
 		/******************************************************************************
 		 *	Reading Labels/Points into the Map:
@@ -28,8 +28,50 @@ int main()
 		 *	the correct format. Only continue processing if the file was opened and the
 		 *	map is not empty.
 		 ******************************************************************************/
+		//Asks user to enter file
+		std::cout << "Please enter file to open: ";
+		std::cin >> fileName;		
+		infile.open(fileName.c_str());
 
-		
+		//Checks to see if file exists or not
+		//If exists proceeds. If not show error message
+		if (infile.fail())
+		{
+			std::cout << fileName << " could not be opened. Make sure this file exists.\n";
+		}
+		//Checks to see if file is empty or not
+		//If not empty proceeds. If empty show error message
+		else if (infile.peek() == std::ifstream::traits_type::eof())
+		{
+			std::cout << fileName << " is an empty file. Check to see if the file is in proper format and has valid data.\n";
+		}
+		//File is opened
+		else
+		{
+			//Declarations
+			int x, y;
+			std::string points;
+
+			//Loop which grabs important information from file and ignores white space and punctuation
+			while (!infile.fail())
+			{
+				infile >> points;
+				infile.ignore(1, ' ');
+				infile.ignore(1, '(');
+				infile >> x;
+				infile.ignore(1, ',');
+				infile.ignore(1, ' ');
+				infile >> y;
+				infile.ignore(1, ')');
+
+				auto* temp_object = new Vector2D<int>(x, y);
+
+				//adds points gathered from file to temp_object
+				coordinatesMap[points] = temp_object;
+			}
+			infile.close();
+		}
+			
 
 		/******************************************************************************
 		 *	Determine the Total Distance Between All Points in Order:
