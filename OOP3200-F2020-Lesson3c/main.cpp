@@ -16,6 +16,7 @@ int main()
 
 		std::ifstream infile;
 		std::string fileName;
+		int totalDistance{};
 		
 		/******************************************************************************
 		 *	Reading Labels/Points into the Map:
@@ -84,7 +85,24 @@ int main()
 		 *	to the user how many points the map contains and what the total distance is.
 		 ******************************************************************************/
 
-				
+		std::map<std::string, Vector2D<int>*>::iterator iterate = coordinatesMap.begin();
+
+		while (iterate != --coordinatesMap.end())
+		{
+			float distance;
+			Vector2D<int> point1 = *iterate->second;
+
+			Vector2D<int> point2 = *std::next(iterate, 1)->second;
+
+			distance = Vector2D<int>::Distance(point1, point2);
+
+			totalDistance += distance;
+
+			iterate++;
+		}
+
+		std::cout << "Map contains: " << coordinatesMap.size() << " points" << std::endl
+			<< "Total Distance of all points: " << totalDistance << std::endl;
 
 		/******************************************************************************
 		 *	Determine the Distance Between the Start Point and a User Selected Point:
@@ -102,9 +120,9 @@ int main()
 	 *	Catch any std::exception thrown. Report to the user that a run-time error
 	 *	occurred and show what exception was thrown.
 	 ******************************************************************************/
-	catch(...)  // an exception was thrown
+	catch(std::exception ex)  // an exception was thrown
 	{
-		
+		std::cerr << ex.what();
 	}
 
 	// END-OF-PROGRAM
