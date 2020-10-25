@@ -13,7 +13,7 @@ int main()
 		 *	DECLARATIONS
 		 ************************/
 		std::map<std::string, Vector2D<int>*> coordinatesMap;
-
+		std::string userInput{};
 		std::ifstream infile;
 		std::string fileName;
 		int totalDistance{};
@@ -100,7 +100,7 @@ int main()
 
 			iterate++;
 		}
-
+		std::cout
 		std::cout << "Map contains: " << coordinatesMap.size() << " points" << std::endl
 			<< "Total Distance of all points: " << totalDistance << std::endl;
 
@@ -114,6 +114,25 @@ int main()
 		 *	Repeat these steps until the user enters "quit".
 		 ******************************************************************************/
 		
+		 while (userInput != "end")
+		 {
+			std::cout << "Enter the map's label (Enter \"end\" to exit): ";
+			std::getline(std::cin, userInput);
+			std::cout << std::endl;
+
+			iterate = coordinatesMap.find(userInput);
+
+		 	if (iterate != coordinatesMap.end())
+		 	{
+				int distance = Vector2D<int>::Distance(*coordinatesMap.begin()->second, *coordinatesMap[userInput]);
+
+				std::cout << "The distance between " << coordinatesMap.begin()->first << " " << coordinatesMap.begin()->second->ToString() << " and " << userInput << coordinatesMap[userInput]->ToString() << " is " << distance << std::endl;
+		 	}
+			else if (userInput != "end")
+			{
+				std::cout << "The point " << userInput << " does not exist" << std::endl;
+			}
+		 }
 	}
 	/******************************************************************************
 	 *	Exception Handling:
