@@ -1,3 +1,8 @@
+/* OOP 3200 - C++ Lab 5 - Standard Template Library
+ * Ryan Clayson and Daniel Hinbest
+ * 100558837		100717231
+ * October 25, 2020
+ */
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -85,8 +90,10 @@ int main()
 		 *	to the user how many points the map contains and what the total distance is.
 		 ******************************************************************************/
 
+		 //Iterator starts with the first point stored on the map
 		std::map<std::string, Vector2D<int>*>::iterator iterate = coordinatesMap.begin();
 
+		//Loop to store all points in the file on the map
 		while (iterate != --coordinatesMap.end())
 		{
 			float distance;
@@ -94,15 +101,20 @@ int main()
 
 			Vector2D<int> point2 = *std::next(iterate, 1)->second;
 
+			//Calculates distance between the two grabbed points
 			distance = Vector2D<int>::Distance(point1, point2);
 
+			//Takes distance between the points and adds it to the totalDistance
 			totalDistance += distance;
-
+			//Moves on to the next two points in the file
 			iterate++;
 		}
-		std::cout
-		std::cout << "Map contains: " << coordinatesMap.size() << " points" << std::endl
-			<< "Total Distance of all points: " << totalDistance << std::endl;
+		//Display's the total distance all points
+		std::cout << "---------------------------------------------" << std::endl;
+		std::cout << "Map contains: " << coordinatesMap.size() << " points" << std::endl;
+		std::cout << "---------------------------------------------" << std::endl;
+		std::cout<< "Total Distance of all points: " << totalDistance << std::endl;
+		std::cout << "---------------------------------------------" << std::endl;
 
 		/******************************************************************************
 		 *	Determine the Distance Between the Start Point and a User Selected Point:
@@ -114,20 +126,26 @@ int main()
 		 *	Repeat these steps until the user enters "quit".
 		 ******************************************************************************/
 		
+		 //Loop that allows user to enter coordinates. If user wants to end program, types 'end'
 		 while (userInput != "end")
 		 {
+			//User prompt
 			std::cout << "Enter the map's label (Enter \"end\" to exit): ";
+			//Retrieves the user input to search 
 			std::getline(std::cin, userInput);
 			std::cout << std::endl;
 
 			iterate = coordinatesMap.find(userInput);
 
+			//Searches for points that matches
 		 	if (iterate != coordinatesMap.end())
 		 	{
 				int distance = Vector2D<int>::Distance(*coordinatesMap.begin()->second, *coordinatesMap[userInput]);
-
+				std::cout << "----------------------------------------------------" << std::endl;
 				std::cout << "The distance between " << coordinatesMap.begin()->first << " " << coordinatesMap.begin()->second->ToString() << " and " << userInput << coordinatesMap[userInput]->ToString() << " is " << distance << std::endl;
-		 	}
+		 		std::cout << "----------------------------------------------------" << std::endl;
+			}
+			//Point user entered does not match. Show error message
 			else if (userInput != "end")
 			{
 				std::cout << "The point " << userInput << " does not exist" << std::endl;
